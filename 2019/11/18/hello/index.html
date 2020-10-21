@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    <link rel="shortcut icon" type='image/x-icon' href="/favicon.ico">
+
+
+    <!-- meta -->
+
+
+<title>数理逻辑笔记 | Hexo</title>
+
+
+    <meta name="keywords" content="数理逻辑">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="数理逻辑whp  我这课好像名声不太好  9.20要求 不得旷课、迟到和早退 按时做、交作业。不准抄袭 成绩评定 平时20%（作业14%（差不多一次一分）、出勤6%） 期中20% 期末60%     有可能你们寒假看不到成绩，得熬一个假期  什么是数理逻辑 字面含义  广义理解：用数学方法研究演绎规律的学科。  狭义理解  研究对象：推理过程的正确性标准。 是数学的一个分支。又称符号逻辑等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数理逻辑笔记">
+<meta property="og:url" content="http://example.com/2019/11/18/hello/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数理逻辑whp  我这课好像名声不太好  9.20要求 不得旷课、迟到和早退 按时做、交作业。不准抄袭 成绩评定 平时20%（作业14%（差不多一次一分）、出勤6%） 期中20% 期末60%     有可能你们寒假看不到成绩，得熬一个假期  什么是数理逻辑 字面含义  广义理解：用数学方法研究演绎规律的学科。  狭义理解  研究对象：推理过程的正确性标准。 是数学的一个分支。又称符号逻辑等。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/baker-huawei/AppData/Roaming/Typora/typora-user-images/1568984760197.png">
+<meta property="article:published_time" content="2019-11-18T03:07:17.000Z">
+<meta property="article:modified_time" content="2019-11-18T03:09:22.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="数理逻辑">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/baker-huawei/AppData/Roaming/Typora/typora-user-images/1568984760197.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/default.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">
+                Demo
+            </span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">
+                        首页
+                    </a>
+                
+                    <a href="/tags/" class="navbar-menu button">
+                        标签
+                    </a>
+                
+                    <a href="/archives/" class="navbar-menu button">
+                        归档
+                    </a>
+                
+                    <a href="/friends/" class="navbar-menu button">
+                        友链
+                    </a>
+                
+                    <a href="/page/" class="navbar-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path>
+                </svg>
+            </a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">
+                        首页
+                    </a>
+                
+                    <a href="/tags/" class="dropdown-menu button">
+                        标签
+                    </a>
+                
+                    <a href="/archives/" class="dropdown-menu button">
+                        归档
+                    </a>
+                
+                    <a href="/friends/" class="dropdown-menu button">
+                        友链
+                    </a>
+                
+                    <a href="/page/" class="dropdown-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        数理逻辑笔记
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2019/11/" class="post-meta__date button">
+    2019-11-18
+</a>
+        
+    <span class="separate-dot"></span><a href="/categories/%E6%95%B0%E5%AD%A6/" class="button">数学</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="数理逻辑"><a href="#数理逻辑" class="headerlink" title="数理逻辑"></a>数理逻辑</h1><p>whp</p>
+<blockquote>
+<p>我这课好像名声不太好</p>
+</blockquote>
+<h1 id="9-20"><a href="#9-20" class="headerlink" title="9.20"></a>9.20</h1><h3 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h3><ul>
+<li>不得旷课、迟到和早退</li>
+<li>按时做、交作业。不准抄袭</li>
+<li>成绩评定<ul>
+<li>平时20%（作业14%（差不多一次一分）、出勤6%）</li>
+<li>期中20%</li>
+<li>期末60%</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>有可能你们寒假看不到成绩，得熬一个假期</p>
+</blockquote>
+<h3 id="什么是数理逻辑"><a href="#什么是数理逻辑" class="headerlink" title="什么是数理逻辑"></a>什么是数理逻辑</h3><ul>
+<li><p>字面含义</p>
+</li>
+<li><p>广义理解：用数学方法研究演绎规律的学科。</p>
+</li>
+<li><p>狭义理解</p>
+</li>
+<li><p>研究对象：推理过程的正确性标准。</p>
+<p>是数学的<strong>一个分支</strong>。又称符号逻辑等。</p>
+</li>
+</ul>
+<ul>
+<li>公理集合论</li>
+<li>递归论</li>
+<li>模型论</li>
+<li>证明论</li>
+</ul>
+<p>本课程学习四个分支的共同基础：<strong>逻辑演算</strong></p>
+<p>独立性问题 ZFC</p>
+<p>不可解问题</p>
+<h3 id="特点与方法"><a href="#特点与方法" class="headerlink" title="特点与方法"></a>特点与方法</h3><ul>
+<li>公理化与形式化方法</li>
+<li>特制的符号语言</li>
+</ul>
+<h2 id="sect26-2-命题和联结词"><a href="#sect26-2-命题和联结词" class="headerlink" title="$\sect26.2$ 命题和联结词"></a>$\sect26.2$ 命题和联结词</h2><h3 id="1-什么是命题？"><a href="#1-什么是命题？" class="headerlink" title="1. 什么是命题？"></a>1. 什么是命题？</h3><ul>
+<li><p>陈述客观外界发生事情的陈述句</p>
+</li>
+<li><p>或为真或为假的陈述句</p>
+</li>
+<li><p><strong>命题特征</strong></p>
+<ul>
+<li>陈述句</li>
+<li>真假必居其一，且只居其一</li>
+</ul>
+</li>
+<li><p>我正在撒谎。    ——<strong>不是命题</strong>，是==悖论==</p>
+</li>
+</ul>
+<h4 id="命题的抽象"><a href="#命题的抽象" class="headerlink" title="命题的抽象"></a>命题的抽象</h4><ul>
+<li>pqr等表示命题</li>
+<li>以1表示真，0表示假</li>
+</ul>
+<p>将下列命题符号化：</p>
+<ul>
+<li>李四是计算机系的学生, 他住在312室或313室。<ul>
+<li>不能<strong>直接用或</strong>！如果住312和313都为真，命题也为真！</li>
+<li>==容或|异或==</li>
+</ul>
+</li>
+</ul>
+<h2 id="sect26-3-命题形式和真值表"><a href="#sect26-3-命题形式和真值表" class="headerlink" title="$\sect26.3$ 命题形式和真值表"></a>$\sect26.3$ 命题形式和真值表</h2><h3 id="命题形式的定义"><a href="#命题形式的定义" class="headerlink" title="命题形式的定义"></a>命题形式的定义</h3><ol>
+<li>任何命题变元都是命题形式。 ——此时称为<strong>原子命题</strong>形式</li>
+<li>若$\alpha$是命题形式，则$(\neg \alpha)$也是命题形式</li>
+<li>若$\alpha$、$\beta$是命题形式，则$(\alpha \vee \beta)$、$(\alpha \wedge \beta)$、$(\alpha \rightarrow \beta)$、$(\alpha \leftrightarrow\beta)$都是命题形式（注意==有括号！！！==）</li>
+<li>只有有限次地应用1-3构成的符号串才是命题形式</li>
+</ol>
+<img src="C:\Users\baker-huawei\AppData\Roaming\Typora\typora-user-images\1568984760197.png" alt="1568984760197" style="zoom: 50%;" />
+
+<p>3是4不是，没有括号！！！</p>
+<p>$((\neg q))$不是，括号多了！</p>
+<p>$\neg p$不是，少括号！</p>
+<p>如果定义没有括号，则$p\rightarrow q\rightarrow r$是公式，但是有两种构成方法，含义不相同，是不等价的！</p>
+<h4 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h4><ul>
+<li>非（$\neg$）的优先级高于其他的</li>
+<li>省略命题形式最外层括号</li>
+</ul>
+<h4 id="一些注记"><a href="#一些注记" class="headerlink" title="一些注记"></a>一些注记</h4><ul>
+<li>括号从右往左加</li>
+</ul>
+<p>命题形式的BNF（Bacus Normal Form）</p>
+<ul>
+<li>$\alpha ::=p|(\neg \alpha)|(\alpha \vee \beta)|(\alpha \wedge \beta)|(\alpha \rightarrow \beta) |(\alpha \leftrightarrow \beta)$</li>
+</ul>
+<p>每个命题形式都是有限符号串</p>
+<h4 id="指派"><a href="#指派" class="headerlink" title="指派"></a>指派</h4><ul>
+<li>从${p_1, p_2,…, p_n}$到${0,1}$的一个函数</li>
+<li>成真指派</li>
+<li>成假指派</li>
+</ul>
+<h1 id="10-11"><a href="#10-11" class="headerlink" title="10.11"></a>10.11</h1><p>第一次课：把日常生活问题变为数学对象</p>
+<ol>
+<li>如何？引入命题变元，逻辑运算（联结词）</li>
+<li>命题常元：之后会涉及</li>
+</ol>
+<h4 id="指派-1"><a href="#指派-1" class="headerlink" title="指派"></a>指派</h4><ul>
+<li>是映射（map）</li>
+<li>成真指派/成假指派<ul>
+<li>不可能有指派求不出来的情况（所有变元值都确定）</li>
+<li>指派只可能有0/1之外的值（古典逻辑一个命题只能有0/1两个值）</li>
+</ul>
+</li>
+<li>n个变元，有$2^n$种指派</li>
+<li>真值表：表示公式在所有指派下的<strong>真假</strong><ul>
+<li>原则上所有子公式都要列出</li>
+<li>实际上保证$\alpha$的值不要求错，跳步不要过多即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="命题形式的类型"><a href="#命题形式的类型" class="headerlink" title="命题形式的类型"></a>命题形式的类型</h3><ul>
+<li>重(chong)言式/永真式：所有指派均为成真指派</li>
+<li>矛盾式/永假式：所有指派均为成假指派</li>
+<li>可满足式：<strong>存在</strong>某个指派为成真指派<ul>
+<li>在算法中地位很重要：SAT问题<ul>
+<li>等价描述：一个命题公式是否是可满足式</li>
+<li>第一个NP完全问题（Cook-Levin定理）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="与哑元的无关性"><a href="#与哑元的无关性" class="headerlink" title="与哑元的无关性"></a>与哑元的无关性</h3><ul>
+<li><p>定理：证明用归纳法</p>
+</li>
+<li><p>数学中不能靠只管，每一步都有理由（不要显然/易见）</p>
+<ul>
+<li>想不到证明方法的：用反证法、归纳法（对$\alpha$由简单到复杂（<strong>所包含的联结词个数</strong>）归纳）</li>
+</ul>
+</li>
+</ul>
+<h2 id="sect26-4-联结词的完全集"><a href="#sect26-4-联结词的完全集" class="headerlink" title="$\sect26.4$ 联结词的完全集"></a>$\sect26.4$ 联结词的完全集</h2><p>为什么只考虑五个联结词？</p>
+<ul>
+<li>这五个联结词能否表示所有联结词？</li>
+<li>这五个联结词是否有多余的？</li>
+</ul>
+<p>要回答这个问题，必须回答：</p>
+<ul>
+<li>什么是联结词？</li>
+<li>什么是一些联结词表示了一个联结词？</li>
+<li>什么是联结词的“多余”？</li>
+</ul>
+<h3 id="什么是联结词？"><a href="#什么是联结词？" class="headerlink" title="什么是联结词？"></a>什么是联结词？</h3><ul>
+<li><p>联结词确立了复合命题的构造方式</p>
+</li>
+<li><p>复合命题建立了真假值对应方式</p>
+</li>
+<li><p>直观的说，联结词就是用来构造复合命题的连词</p>
+</li>
+</ul>
+<blockquote>
+<p>$f: D^n \to D$ 称为D上n元运算（D上n元函数）</p>
+</blockquote>
+<p>$A^n = {&lt;a_1, a_2, …, a_n&gt;|a_i \in A, 1\leq i \leq n}$（对应一个卡氏积）</p>
+<p>$N(p_1, p_2,…,p_n) \  t_1, t_2,…,t_n\ t_i=0\ or\ 1$</p>
+<p>称为${0, 1}$上的n元函数（n元真值函数）</p>
+<ul>
+<li>每个联结词c<strong>确定了一个真值函数</strong>$f_c$</li>
+<li>每个真值函数也确定了一个联结词</li>
+</ul>
+<h3 id="联结词的表示"><a href="#联结词的表示" class="headerlink" title="联结词的表示"></a>联结词的表示</h3><ul>
+<li><p>什么叫“用$\wedge$和$\to$表示$\leftrightarrow$”？</p>
+</li>
+<li><p>可写为：两者真值表相同</p>
+</li>
+<li><p>用$c_1, c_2, …, c_k$表示c $\Rightarrow$  仅用$c_1, c_2, …, c_k$可以构造一个命题$\alpha$与由c构造的命题等价 $\Rightarrow$存在$\alpha$使$\alpha$在任意指派$&lt;t_1, t_2, …, t_n&gt;$下的值恰为$f_c(t_1, t_2, …, t_n)$</p>
+</li>
+</ul>
+<p>证明：${\neg, \vee, \wedge, \to}$是联结词的一个完全集</p>
+<p>​    证：只要证对任k元真值函数f，存在仅含…中联结词的k原命题形式$\alpha$使得$\alpha$在任意指派下的值即为$f(t_1, t_2, …,t_k)$，对k<strong>归纳证明</strong>（PPT12-13）</p>
+<blockquote>
+<p>与非门、或非门 联结词完全集$\uparrow\quad \downarrow$</p>
+</blockquote>
+<h4 id="推论-PPT15"><a href="#推论-PPT15" class="headerlink" title="推论 PPT15"></a>推论 PPT15</h4><p>${\neg, \to}$可以表示$\vee$和$\wedge$</p>
+<ul>
+<li>$\alpha \vee \beta \Leftrightarrow (\neg\alpha)\to\beta$</li>
+<li>$\alpha\wedge\beta\Leftrightarrow\neg(\neg\alpha\vee\neg\beta)\Leftrightarrow\neg(\alpha\to(\neg\beta)$</li>
+</ul>
+<p>${\neg, \vee}$</p>
+<p>${\neg, \wedge}$</p>
+<p>${\vee,\wedge,\to,\leftrightarrow}$<strong>不是</strong>联结词的完全集</p>
+<ul>
+<li>总取0值的真值函数不能由只含此集合中的联结词的命题形式来表示，因为这样的命题形式在其中的命题变元都取1时也取值1，而不为0（全取1时推不出0）</li>
+</ul>
+<p>${\neg, \leftrightarrow}$不完全，如何证？</p>
+<ul>
+<li>有什么特征？</li>
+<li>习题解析大致思想对，说法不是太严格</li>
+</ul>
+<p>上一个不完全，则${\neg}$也不完全</p>
+<h2 id="sect26-5-推理形式"><a href="#sect26-5-推理形式" class="headerlink" title="$\sect26.5$ 推理形式"></a>$\sect26.5$ 推理形式</h2><ul>
+<li>推理是逻辑的研究对象</li>
+<li>什么是推理形式？<ul>
+<li>一组前提，一个结论</li>
+<li>前提、结论都是命题</li>
+</ul>
+</li>
+<li>什么是正确的推理形式？<ul>
+<li>直观上正确的推理应保证：若前提正确，则结论也应该正确</li>
+<li>有效的推理：若对$\alpha_1, \alpha_2,…,\alpha_n,\beta$中出现的命题变元的任意指派，若$\alpha_1, \alpha_2,…,\alpha_n$都真，则$\beta$亦</li>
+<li>否则，称是无效的或不合理的（存在指派使前提都为真，结论却为假）</li>
+<li>是否有效与命题形式的排列次序无关</li>
+</ul>
+</li>
+<li>推理有效的充要条件：$(\alpha_1\wedge\alpha_2\wedge…\wedge\alpha_n)\to\beta$是重言式，记为$\alpha_1, \alpha_2,…,\alpha_n\vDash \beta$<ul>
+<li>（同一符号，从右向左算）</li>
+<li>意义：<ul>
+<li>推理形式的有效性与命题形式的永真性可以互相化约</li>
+<li>今后将证明带前提的证明系统和重言式证明系统，并证明它们的等价性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>一些有效推理</li>
+</ul>
+<h1 id="10-18"><a href="#10-18" class="headerlink" title="10.18"></a>10.18</h1><h2 id="sect26-6-命题演算自然推理形式系统N"><a href="#sect26-6-命题演算自然推理形式系统N" class="headerlink" title="$\sect26.6$ 命题演算自然推理形式系统N"></a>$\sect26.6$ 命题演算自然推理形式系统N</h2><p>形式化逻辑</p>
+<p>怎么在计算机上实现如下有效推理</p>
+<ul>
+<li>识别符号</li>
+<li>识别公式</li>
+<li>推理方法</li>
+</ul>
+<h3 id="N的推理规则"><a href="#N的推理规则" class="headerlink" title="N的推理规则"></a>N的推理规则</h3><ul>
+<li><p>包含律</p>
+</li>
+<li><p>$\neg$消去律</p>
+<ul>
+<li>$\neg$引入律其实也有，为什么没有加入？后面或许能清楚</li>
+</ul>
+</li>
+<li><p>$\to$消去律</p>
+</li>
+<li><p>$\to$引入律</p>
+</li>
+<li><p>$\vee$消去律</p>
+<ul>
+<li>注意$\vee$在前提中出现了，也叫消去</li>
+</ul>
+</li>
+<li><p>$\vee$引入律</p>
+</li>
+<li><p>$\wedge$消去律</p>
+</li>
+<li><p>$\wedge$引入律</p>
+</li>
+<li><p>$\leftrightarrow$消去律</p>
+</li>
+<li><p>$\leftrightarrow$引入律</p>
+</li>
+</ul>
+<h3 id="用形式系统N可以做什么？"><a href="#用形式系统N可以做什么？" class="headerlink" title="用形式系统N可以做什么？"></a>用形式系统N可以做什么？</h3><p>P12</p>
+<p>实际上能用来做证明</p>
+<h4 id="N的证明序列"><a href="#N的证明序列" class="headerlink" title="N的证明序列"></a>N的证明序列</h4><p><strong>注记</strong>：</p>
+<ol>
+<li>命题形式与N公式在定义上虽然一样，本质上也一样，都是命题的抽象，但他们仍有差别。</li>
+<li>形式语言与元语言<ol>
+<li>形式语言<ul>
+<li>N中的符号和公式</li>
+<li>逗号也是形式语言</li>
+</ul>
+</li>
+<li>元语言符号<ul>
+<li>在叙述N的构成和性质时使用了非N中符号。</li>
+<li>元语言一般为自然语言。</li>
+<li>例：学英语时汉语是元语言</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>公式的简写</p>
+<p>证明序列的简写</p>
+<p>直觉主义</p>
+<p>布尔巴基</p>
+<p>例14(1)   添加一个$\neg$放到前提中，看能推出什么（有点反证法的意味）</p>
+<p>推导要严格按照规则的形式推导</p>
+<p>若推理规则中非减改成非加，能够推出非减吗？</p>
+<p>注意：<br>$$<br>\alpha’\vdash\alpha\text{   （若改为}\alpha\vdash\alpha’\text{则不对！）}\<br>\alpha, \beta\vdash\gamma<br>$$<br>则有<br>$$<br>\alpha’, \beta\vdash\gamma<br>$$</p>
+<h1 id="10-25"><a href="#10-25" class="headerlink" title="10.25"></a>10.25</h1><p>例18的(6)和(7)实际上是对偶的</p>
+<p>例18.4的证明</p>
+<ul>
+<li><p>例15：逆否的那一堆</p>
+</li>
+<li><p>定理7：$\alpha_1\to \alpha_2 \vdash\alpha_3 \to\alpha_4$若$\alpha_1\vdash\alpha_2$，则$\alpha_3\vdash\alpha_4$</p>
+</li>
+</ul>
+<p>（例18：很多利用传递律证明）</p>
+<p>例19：关于等价的证明</p>
+<ul>
+<li><p>定理8</p>
+</li>
+<li><p>定理8的<strong>意义</strong></p>
+</li>
+<li><p>定理8说明任何一个有前提的形式推演关系都可转化为与之等价的<strong>没有前提</strong>的形式推演关系。</p>
+<p>即：任何一个形式推演关系都可化为一个与之等价的可证式</p>
+</li>
+</ul>
+<h2 id="sect-26-7-命题演算推理形式系统P"><a href="#sect-26-7-命题演算推理形式系统P" class="headerlink" title="$\sect 26.7$ 命题演算推理形式系统P"></a>$\sect 26.7$ 命题演算推理形式系统P</h2><ul>
+<li><p>P在各本书名称可能不太相同，有些书中称为希尔伯特型系统</p>
+</li>
+<li><p>N又称为甘岑系统</p>
+</li>
+<li><p>命题演算推理系统P是一个“简洁”的形式系统</p>
+</li>
+</ul>
+<h4 id="P的符号库"><a href="#P的符号库" class="headerlink" title="P的符号库"></a>P的符号库</h4><ul>
+<li>可数个命题符号</li>
+<li>2个联结词符号 $\neg, \to$</li>
+<li>2个辅助符号</li>
+</ul>
+<p>P的推理规则</p>
+<p>注记：</p>
+<ul>
+<li>分清P的定义中的元语言与对象语言</li>
+<li>P的形式语言是N的形式语言子语言</li>
+<li>关于N的注记同样适用于P，如括号省略规则</li>
+</ul>
+<h1 id="11-1"><a href="#11-1" class="headerlink" title="11.1"></a>11.1</h1><p>==期中考试时间，估计在11.15号，也可能再往后推迟一周==</p>
+<p><strong>定理10（演绎(deduction)定理）</strong>：推理中常用的定理</p>
+<p>带前提的证明，证明过的都可以直接用（<strong>写“已证”或”内定理“）</strong></p>
+<p>书上例题要善于总结</p>
+<blockquote>
+<p>这书是我写的，哪些证过哪些没有我是清楚的</p>
+</blockquote>
+<p>不确定证明过时要自己再证明一遍</p>
+<h2 id="sect-26-8-N与P的等价性"><a href="#sect-26-8-N与P的等价性" class="headerlink" title="$\sect 26.8$ N与P的等价性"></a>$\sect 26.8$ N与P的等价性</h2><p>等价性：$\Gamma\vdash_\mathrm{P}\alpha$当且仅当$\Gamma\vdash_\mathrm{N}\alpha$（更弱的一种表现：$\vdash_\mathrm{P}\alpha \Leftrightarrow \vdash_\mathrm{N} \alpha$）</p>
+<p>如何处理N与P连接词不同的问题？</p>
+<ul>
+<li>可以扩展P的连接词，但是实际上是将那些连接词在P中看成另一个东西的简写</li>
+</ul>
+<p>当$\Gamma$为无限公式集时，对于P可能成立，但对于N不可能成立！</p>
+<ul>
+<li>解决方法：若$\Sigma\vdash_\mathrm{P}\alpha$，则存在$\Sigma$的有限子集$\Sigma_0\subseteq\Sigma$，使得$\Sigma_0\vdash_\mathrm{P}\alpha$。（因为证明过程是有限的，故在证明过程中用到的前提必定是有限的）</li>
+</ul>
+<h2 id="sect26-9-赋值"><a href="#sect26-9-赋值" class="headerlink" title="$\sect26.9$ 赋值"></a>$\sect26.9$ 赋值</h2><ul>
+<li>指派 $\sigma(p_i)(i\in \N)$</li>
+<li>赋值  $\alpha^\sigma$</li>
+</ul>
+<p>哑元无关性</p>
+<p>替换定理（定理19）</p>
+<ul>
+<li>注意两个问题，否则不能保证永真<ul>
+<li>若将$q_i$替换为$\beta_i$，须将$q_i$的<strong>所有</strong>出现都换为$\beta_i$</li>
+<li>替换时只能替换命题变元，不能替换公式</li>
+</ul>
+</li>
+</ul>
+<h1 id="11-8"><a href="#11-8" class="headerlink" title="11.8"></a>11.8</h1><blockquote>
+<p>写证明序列的时候例题能不能用？</p>
+<p>在P中用公理和规则。但是标准放宽，注明是例题即可，但是只能用书上的。</p>
+<p>只能用<strong>例题</strong>，不能用习题</p>
+<p>证明序列如果不做要求，也能用演绎定理。带前提证明序列，最后用演绎定理即可</p>
+<p>P中证明序列<strong>前提一定是固定的</strong></p>
+</blockquote>
+<p>“语法”</p>
+<p>从赋值开始讲的，是“语义”部分，给每个语法对象含义</p>
+<p>蕴含没有结合律</p>
+<p>常用等值公式：P26-33</p>
+<ul>
+<li>0、1都不是公式，分别代表了<strong>任意</strong>的<strong>矛盾式和重言式</strong></li>
+<li>其实0和1也可以在一开始定义时放在公式中（推出来无矛盾即可）<ul>
+<li>但是会让有些性质不成立</li>
+<li>例如：会让连接词完全集只有${\to}$成立</li>
+</ul>
+</li>
+</ul>
+<p>第一替换定理（定理20）</p>
+<p>第二替换定理（定理21）</p>
+<ul>
+<li>换一些留一些</li>
+</ul>
+<p>等值演算</p>
+<p>范式</p>
+<ul>
+<li><p>简单合取式、简单析取式</p>
+</li>
+<li><p><strong>析取</strong>范式：简单合取式的<strong>析取</strong>构成的公式</p>
+</li>
+<li><p><strong>合取</strong>范式：简单析取式的合取构成的公式</p>
+</li>
+<li><p>单个简单析（合）取式既是合取范式也是析取范式</p>
+</li>
+</ul>
+<p>析取范式定理（定理28）：P的任一个公式$\alpha$都等值于一个析取范式$\beta$</p>
+<p>合取范式定理</p>
+<blockquote>
+<p>有无办法重新定义范式，让其能够唯一？</p>
+<p>”主析取范式“的唯一性？</p>
+</blockquote>
+<p>用等值验算求范式</p>
+<p>联结词完全集的另外证明</p>
+<h2 id="sect26-10-可靠性、和谐性与完备性"><a href="#sect26-10-可靠性、和谐性与完备性" class="headerlink" title="$\sect26.10$ 可靠性、和谐性与完备性"></a>$\sect26.10$ 可靠性、和谐性与完备性</h2><p><strong>之后再写证明某一个式子：</strong></p>
+<ol>
+<li><strong>构造证明序列</strong></li>
+<li>利用内定理</li>
+<li>利用完全性</li>
+</ol>
+<p>联结词、时态词、动作词</p>
+<p>大部分题目会要求：写出证明序列</p>
+<ul>
+<li>可以用例子</li>
+<li>可以用演绎定理</li>
+</ul>
+<p>有些题目：不用演绎定理证明</p>
+<p>只用公理和规则证明</p>
+<p>会不会考证明可靠性完备性这些？</p>
+<ul>
+<li>肯定会考的！</li>
+<li>证明性质也是必然的</li>
+<li>语法以后的东西都比较重要</li>
+</ul>
+<p>有无可能考书上例题、习题？</p>
+<ul>
+<li>必然的</li>
+<li>习题解答的补充题都是以往的考题</li>
+</ul>
+<p>考试1个半小时？</p>
+
+    </div>
+     
+    <div class="post-footer__meta">
+    <p>
+        updated at 2019-11-18
+    </p>
+</div> 
+    <div class="post-meta__cats">
+    
+        <a href="/categories/%E6%95%B0%E5%AD%A6/" class="post-cats__link button">数学</a>
+    
+    
+        <a href="/tags/%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/" class="post-tags__link button"># 数理逻辑</a>
+    
+</div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/2020/10/22/hello-world/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            Previous Post
+                        </div>
+                        <div class="nav__title">
+                            Hello World
+                        </div>
+                    </div>
+                </a>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2019/08/15/%E7%A8%8B%E8%AE%BE%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            程设期中复习
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2020 <a href="/">Hexo</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
