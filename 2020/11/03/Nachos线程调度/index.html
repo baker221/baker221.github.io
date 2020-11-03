@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    <link rel="shortcut icon" type='image/x-icon' href="/favicon.ico">
+
+
+    <!-- meta -->
+
+
+<title>Nachos 线程调度 | Baker&#39;s blog</title>
+
+
+    <meta name="keywords" content="操作系统, Nachos 实习报告">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="Nachos实习报告：线程调度 刘俊麟 1800013053  [toc]  1 任务完成情况   任务 Exercise 1 Exercise 2 Exercise 3 Challenge 1    完成情况 Y Y Y Y   2 具体Exercise完成情况2.1 Exercise 1 调研 调研 Linux 或 Windows 中采用的进程&#x2F;线程调度算法。  我调研了 Windows 中采">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nachos 线程调度">
+<meta property="og:url" content="https://blog.baker221.codes/2020/11/03/Nachos%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6/index.html">
+<meta property="og:site_name" content="Baker&#39;s blog">
+<meta property="og:description" content="Nachos实习报告：线程调度 刘俊麟 1800013053  [toc]  1 任务完成情况   任务 Exercise 1 Exercise 2 Exercise 3 Challenge 1    完成情况 Y Y Y Y   2 具体Exercise完成情况2.1 Exercise 1 调研 调研 Linux 或 Windows 中采用的进程&#x2F;线程调度算法。  我调研了 Windows 中采">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-03T09:16:45.976Z">
+<meta property="article:author" content="baker221">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="Nachos 实习报告">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/default.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">
+                Baker&#39;s blog
+            </span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">
+                        Home
+                    </a>
+                
+                    <a href="/tags/" class="navbar-menu button">
+                        Tag
+                    </a>
+                
+                    <a href="/archives/" class="navbar-menu button">
+                        Archive
+                    </a>
+                
+                    <a href="/friends/" class="navbar-menu button">
+                        Friend
+                    </a>
+                
+                    <a href="/page/" class="navbar-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path>
+                </svg>
+            </a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">
+                        Home
+                    </a>
+                
+                    <a href="/tags/" class="dropdown-menu button">
+                        Tag
+                    </a>
+                
+                    <a href="/archives/" class="dropdown-menu button">
+                        Archive
+                    </a>
+                
+                    <a href="/friends/" class="dropdown-menu button">
+                        Friend
+                    </a>
+                
+                    <a href="/page/" class="dropdown-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        Nachos 线程调度
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2020/11/" class="post-meta__date button">
+    2020-11-03
+</a>
+        
+    <span class="separate-dot"></span><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%BE%E7%A8%8B/" class="button">计算机课程</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="Nachos实习报告：线程调度"><a href="#Nachos实习报告：线程调度" class="headerlink" title="Nachos实习报告：线程调度"></a>Nachos实习报告：线程调度</h1><p align=right>
+刘俊麟
+1800013053
+</p>
+[toc]
+
+<h2 id="1-任务完成情况"><a href="#1-任务完成情况" class="headerlink" title="1 任务完成情况"></a>1 任务完成情况</h2><table>
+<thead>
+<tr>
+<th align="center">任务</th>
+<th align="center">Exercise 1</th>
+<th align="center">Exercise 2</th>
+<th align="center">Exercise 3</th>
+<th align="center">Challenge 1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">完成情况</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+</tr>
+</tbody></table>
+<h2 id="2-具体Exercise完成情况"><a href="#2-具体Exercise完成情况" class="headerlink" title="2 具体Exercise完成情况"></a>2 具体Exercise完成情况</h2><h3 id="2-1-Exercise-1-调研"><a href="#2-1-Exercise-1-调研" class="headerlink" title="2.1 Exercise 1 调研"></a>2.1 Exercise 1 调研</h3><blockquote>
+<p>调研 Linux 或 Windows 中采用的进程/线程调度算法。</p>
+</blockquote>
+<p>我调研了 Windows 中采用的进程/线程调度算法，结合课程的PPT一起得到了 Windows 调度算法的特点。</p>
+<p>首先， Windows 系统的调度单位是线程。 Windows 采用了一种基于动态优先级的抢占式调度算法。更详细地说：</p>
+<ul>
+<li>Windows 中就绪线程按照其优先级计入相应的队列之中</li>
+<li>系统总是选择优先级最高的就绪线程来运行</li>
+<li>对于相同优先级的线程，按照时间片轮转 (RR) 算法进行调度</li>
+<li>多处理机系统让多个线程<strong>并行</strong>运行</li>
+</ul>
+<p>并且，当低优先级线程运行时，更高优先级的线程变为就绪态时，当前低优先级线程会被抢占。</p>
+<p>Windows 系统使用了 32 个线程优先级，可分为三类：</p>
+<ul>
+<li>0 : 系统线程/零页线程，用于对系统中的空闲物理页面清理</li>
+<li>1~15: 可变优先级线程，优先级可以在一定范围内升高或降低</li>
+<li>16~31: 实时优先级线程，优先级不改变</li>
+</ul>
+<p>调度程序会为每个调度优先级采用一个队列，每次调动时从高到低依次检查队列直到发现一个可以执行的线程。特别地，如果没有找到就绪线程，调度程序会执行一个被称为空闲线程的线程，其线程优先级被指定为 0 ，且在多处理机系统中每个处理机都有一个对应的空闲线程。</p>
+<p>在 Windows 内核和 Windows API 的数字优先级之间有一个关系。Windows API 定义了一个进程可能属于的一些优先级类型。包括 IDLE_PRIORITY_CLASS, BELOW_NORMAL_PRIORITY_CLASS, NORMAL_PRIORITY_CLASS, ABOVE_NORMAL_PRIORITY_CLASS, HIGH_PRIORITY_CLASS, REALTIME_PRIORITY_CLASS 等。进程通常属于 NORMAL_PRIORITY_CLASS 类，除非进程的父进程属于类 IDLE_PRIORITY_CLASS，或者在创建进程时指定了某个类。此外，通过 Windows API 的函数 <code>SetPriorityClass()</code> ，可以修改进程的优先级的类。除了 REALTIME_PRIORITY_CLASS 之外，所有其他类的优先级都是可变的，这也代表着属于这些类型的线程优先级能够改变。</p>
+<p>具有给定优先级类的线程内部也有其相对优先级。这个相对优先级的值包括：</p>
+<ul>
+<li>IDLE</li>
+<li>LOWEST</li>
+<li>BELOW_NORMAL</li>
+<li>NORMAL</li>
+<li>ABOVE_NORMAL</li>
+<li>HIGHEST</li>
+<li>TIME_CRITICAL</li>
+</ul>
+<p>每个线程的优先级基于它所述的优先级类型和它在该类型中的相对优先级，并且，每个线程在所属类型中有一个优先级基值。默认地，优先级基值为一个类型的优先级相对值 NORMAL 。</p>
+<p>当线程被抢占时，它被放回相应优先级的就绪队列的队首。处于实时优先级的线程在被抢占时，时间配额会被重置为一个完整的时间配额；而处于可变优先级的线程在被抢占时，时间配额则不改变，重新得到处理机后将运行剩余的时间配额。</p>
+<p>当一个线程的时间片被用完时，该线程被挂起。如果线程属于可变的优先级类型，其优先级会降低。降低优先级可以限制计算密集型线程的 CPU 消耗。而若处于不可变的优先级类型，该线程则会回到原来的就绪队列的末尾或是继续运行。</p>
+<p>而在某些情况下， Windows 也会提升线程的当前优先级（如果线程属于可变的优先级类型）:</p>
+<ul>
+<li>I/O 操作完成： 能够保证线程能够更快上 CPU 运行进行数据处理；但为了公平，提升其优先级的同时可能会将其事件配额略减少。</li>
+<li>信号量或事件等待结束。</li>
+<li>前台进程中的线程完成一个等待操作：能有效改进前台应用的响应事件特征。</li>
+<li>由于窗口活动而唤醒窗口线程：特别地，用户正在交互使用的窗口会得到优先级提升，以便改善响应事件。包括 Unix 在内的多种操作系统都采用了这种策略。</li>
+<li>线程处于就绪态超过了一定的时间还没有运行，即产生了“饥饿”现象时</li>
+</ul>
+<p>在对称的多处理机系统上的 Windows 线程调度还具有一些特点，如亲合关系等，在此不详细列出了。</p>
+<h3 id="2-2-Exercise-2-源代码阅读"><a href="#2-2-Exercise-2-源代码阅读" class="headerlink" title="2.2 Exercise 2 源代码阅读"></a>2.2 Exercise 2 源代码阅读</h3><p>在阅读实习说明中给出的几个文件之后，现总结其中的重点如下：</p>
+<p><code>code/threads/scheduler.h</code> 和 <code>code/threads/scheduler.cc</code> ：定义了 <code>Scheduler</code> 类，作为Nachos中的线程调度器。</p>
+<ul>
+<li><code>readyList</code> : 类的主要成员，是类维护的一个FIFO的队列，存储状态为 <code>Ready</code> 的线程。</li>
+<li><code>ReadyToRun()</code> : 将进程状态设置为 <code>Ready</code> 并放入 <code>readyList</code> 中。</li>
+<li><code>FindNextToRun()</code> : 取出 <code>readyList</code> 中最靠前的线程，准备使其上CPU。</li>
+<li><code>Run()</code> : 将旧进程的堆栈等信息保存后，进行线程切换，将新线程的状态信息加载到CPU，运行新线程。实际的信息拷贝等工作由汇编代码 <code>code/threads/switch.s</code> 完成。</li>
+<li>从这两个文件的代码中可以看出，现存的Nachos的调度策略只是简单从 <code>readyList</code> 中取出第一个就绪的线程，即FIFO。</li>
+</ul>
+<p><code>code/threads/switch.s</code> : CPU上进程切换的具体实现。首先保存了当前进程的状态，之后载入新进程的状态，然后切换到相应的栈空间，开始运行新线程。</p>
+<p><code>code/machine/timer.h</code> 和 <code>code/machine/timer.cc</code> : 使用一个 <code>Timer</code> 类用于模拟硬件的时间中断。其中 <code>TimerOfNextInterrupt()</code> 计算出下次中断的时间， <code>TimerExired()</code> 会利用其计算的时间，将中断插入等待处理中断队列之中，并调用相应的时钟中断处理函数。如果 <code>Timer</code> 类的 <code>randomize</code> 成员为 <code>true</code> ，则计算的时间会产生一定的随机偏移。</p>
+<h3 id="2-3-Exercise-3-线程调度算法扩展"><a href="#2-3-Exercise-3-线程调度算法扩展" class="headerlink" title="2.3 Exercise 3 线程调度算法扩展"></a>2.3 Exercise 3 线程调度算法扩展</h3><blockquote>
+<p>扩展线程调度算法，实现基于优先级的抢占式调度算法。</p>
+</blockquote>
+<p>首先，我们先在<code>thread.h</code> 中为 <code>Thread</code> 类增加private变量 <code>priority</code> ，并添加相应的入口函数 <code>setPriority()</code> 和 <code>getPriority()</code> ，并更改相应的构造函数，以让线程在被创建时就被赋予相应的优先级。这里指的注意的一点是， <code>priority</code> 数值越小的其优先级越高。</p>
+<p>之后，修改 <code>scheduler.cc</code> 中的 <code>ReadyToRun()</code> 函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Scheduler::ReadyToRun</span><span class="params">(Thread *thread)</span> </span>&#123;</span><br><span class="line">  DEBUG(<span class="string">&#x27;t&#x27;</span>, <span class="string">&quot;Putting thread %s on ready list.\n&quot;</span>, thread-&gt;getName());</span><br><span class="line"></span><br><span class="line">  thread-&gt;setStatus(READY);</span><br><span class="line">  readyList-&gt;SortedInsert((<span class="keyword">void</span> *)thread, thread-&gt;getPriority());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将之前直接插入的 <code>Append()</code> 函数更改为依照 <code>priority</code> 数值递增的顺序插入（注意数值越小的优先级越大），即能够实现在 <code>readyList</code> 中最靠前的线程拥有最大的优先级。这就实现了基于优先级的调度算法。</p>
+<p>之后实现“抢占式”，若存在优先级更高的线程则抢占当前线程。具体实现同样是在 <code>ReadyToRun()</code> 函数中，在插入线程后，检查插入的线程优先级是否比当前进程更高，若是，则对当前线程进行 <code>Yield()</code> 操作即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (currentThread-&gt;getPriority() &gt; thread-&gt;getPriority()) &#123; <span class="comment">// 数值高的优先级小</span></span><br><span class="line">  currentThread-&gt;Yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我们在 <code>threadtest.cc</code> 文件中增加相应的测试函数并进行测试。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadPriorityTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  DEBUG(<span class="string">&#x27;t&#x27;</span>, <span class="string">&quot;Entering ThreadPriorityTest&quot;</span>);</span><br><span class="line"></span><br><span class="line">  Thread *t1 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread 1&quot;</span>, <span class="number">1</span>);</span><br><span class="line">  Thread *t2 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread 2&quot;</span>, <span class="number">2</span>);</span><br><span class="line">  Thread *t3 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread 3&quot;</span>, <span class="number">3</span>);</span><br><span class="line">  Thread *t4 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread 4&quot;</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">  t4-&gt;Fork(newSimpleThread, (<span class="keyword">void</span> *)<span class="number">4</span>);</span><br><span class="line">  t3-&gt;Fork(newSimpleThread, (<span class="keyword">void</span> *)<span class="number">3</span>);</span><br><span class="line">  t2-&gt;Fork(newSimpleThread, (<span class="keyword">void</span> *)<span class="number">2</span>);</span><br><span class="line">  t1-&gt;Fork(newSimpleThread, (<span class="keyword">void</span> *)<span class="number">1</span>);</span><br><span class="line">  </span><br><span class="line">  currentThread-&gt;Yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们将创建的4个线程按照优先级从低到高的顺序分别执行 <code>newSimpleThread()</code> 函数（即原始的 <code>SimpleThread()</code> 函数删去 <code>Yield()</code> 的部分），可以发现优先级高的线程执行得更早而非按照代码中的顺序，这就实现了按照优先级调度的抢占式算法。</p>
+<h3 id="2-4-Challenge-1-线程调度算法扩展-时间片轮转算法"><a href="#2-4-Challenge-1-线程调度算法扩展-时间片轮转算法" class="headerlink" title="2.4 Challenge 1 线程调度算法扩展 时间片轮转算法"></a>2.4 Challenge 1 线程调度算法扩展 时间片轮转算法</h3><blockquote>
+<p>可实现“时间片轮转算法”、“多级队列反馈调度算法”，或将 Linux 或 Windows 采用的调度算法应用到 Nachos 上。</p>
+</blockquote>
+<p>我尝试了将静态优先级和时间片轮转调度算法结合起来的动态优先级调度算法，这里将动态优先级定义为 <code>(1 + priority) * (1 + timeSliceNum)</code> ，其中 <code>timeSliceNum</code> 表示该线程已经运行过的时间片数量。注意到动态优先级同样是数值小的优先级更高。</p>
+<p>个人认为，这样的优先级设置兼具了时间片轮转算法和静态优先级算法的优点。它不会像静态优先级算法一样让高优先级的进程永远抢占运行的前列，从而导致低优先级进程的饥饿；同时也不会像时间片轮转算法一样让高优先级的进程排在等待队列的末尾，似乎失去了优先级应起到的作用。</p>
+<p>下面是该调度算法的实现过程：</p>
+<p>首先，在 <code>Thread</code> 类中增加 <code>timeSliceNum</code> 变量并增加让其递增的函数，以方便之后时钟中断时让该变量增加。同时，在 <code>Thread</code> 类中添加 <code>getDynamicPrior()</code> 函数，返回线程的动态优先级。</p>
+<p>之后，删除之前 <code>Scheduler</code> 类的 <code>ReadyToRun()</code> 的抢占操作，并添加函数 <code>GetFirst()</code> ，直接返回 <code>readyList</code> 中的首个线程。</p>
+<p>之后在 <code>system.cc</code> 中，添加对于 <code>-rr</code> 命令的识别，当识别到该命令时产生一个调用自行定义的中断处理器且时间不会随机偏移的 <code>Timer</code> 类，相关代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 识别 -rr 指令</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(*argv, <span class="string">&quot;-rr&quot;</span>)) &#123;</span><br><span class="line">      ASSERT(argc &gt; <span class="number">1</span>);</span><br><span class="line">      rrflag = TRUE;</span><br><span class="line">      argCount = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当 rr 时产生特定的 Timer 类</span></span><br><span class="line">  <span class="keyword">if</span> (rrflag) &#123;</span><br><span class="line">    timer = <span class="keyword">new</span> Timer(rrTimerInterruptHandler, <span class="number">0</span>, FALSE);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 特定的中断处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">rrTimerInterruptHandler</span><span class="params">(<span class="keyword">int</span> dummy)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;\n\n\n--------------------------------\n&quot;</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;time interrupt at totalTicks %d\n&quot;</span>, stats-&gt;totalTicks);</span><br><span class="line">  currentThread-&gt;increaseTimeSliceNum();</span><br><span class="line">  <span class="keyword">if</span> (interrupt-&gt;getStatus() != IdleMode) &#123;</span><br><span class="line">    Thread *pendingThread = scheduler-&gt;GetFirst();</span><br><span class="line">    <span class="keyword">if</span> (pendingThread != <span class="literal">NULL</span> &amp;&amp;</span><br><span class="line">        pendingThread-&gt;getDynamicPrior() &lt; currentThread-&gt;getDynamicPrior()) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;context switching at totalTicks %d\n&quot;</span>,</span><br><span class="line">             stats-&gt;totalTicks);</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------\n\n\n&quot;</span>);</span><br><span class="line">      interrupt-&gt;YieldOnReturn();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;No context switching happens\n&quot;</span>);</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------\n\n\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;readyList is empty\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;--------------------------------\n\n\n&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在中断处理函数中，我们首先将当前线程的 <code>timeSliceNum</code> 递增，然后取出 <code>readyList</code> 中的首个线程，并将当前线程的动态优先级和取出的线程相比较，当取出线程优先级更高时则发生线程之间的切换。</p>
+<p>最后，我们在 <code>threadtest.cc</code> 中编写相应的测试函数，注意到我们调用了 <code>OneTick()</code> 来让时间不断增长。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SimpleThread_ticks</span><span class="params">(<span class="keyword">int</span> which)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> num;</span><br><span class="line">  <span class="keyword">for</span> (num = <span class="number">0</span>; num &lt; <span class="number">80</span>; num++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*** thread %d with priority %d looped %d times, its dynamic &quot;</span></span><br><span class="line">           <span class="string">&quot;priority is %d. now totalTicks: %d\n&quot;</span>,</span><br><span class="line">           which, currentThread-&gt;getPriority(), num,</span><br><span class="line">           currentThread-&gt;getDynamicPrior(), stats-&gt;totalTicks);</span><br><span class="line">    interrupt-&gt;OneTick();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThreadRRTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  DEBUG(<span class="string">&#x27;t&#x27;</span>, <span class="string">&quot;Entering ThreadRRTest&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;before true rrtest, now ticks: %d\n\n&quot;</span>, stats-&gt;totalTicks);</span><br><span class="line">  <span class="keyword">int</span> priors[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>&#125;;</span><br><span class="line">  <span class="keyword">char</span> *names[<span class="number">4</span>] = &#123;<span class="string">&quot;forked thread 1&quot;</span>, <span class="string">&quot;forked thread 2&quot;</span>, <span class="string">&quot;forked thread 3&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;forked thread 4&quot;</span>&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">    Thread *t = <span class="keyword">new</span> Thread(names[i], priors[i]);</span><br><span class="line">    t-&gt;Fork(SimpleThread_ticks, (<span class="keyword">void</span> *)(i + <span class="number">1</span>));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;After fork, ticks: %d\n\n&quot;</span>, stats-&gt;totalTicks);</span><br><span class="line"></span><br><span class="line">  currentThread-&gt;Yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">*** thread 2 with priority 5 looped 7 times, its dynamic priority is 6. now totalTicks: 380</span><br><span class="line">*** thread 2 with priority 5 looped 8 times, its dynamic priority is 6. now totalTicks: 390</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------</span><br><span class="line">time interrupt at totalTicks 400</span><br><span class="line">context switching at totalTicks 400</span><br><span class="line">--------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*** thread 1 with priority 1 looped 22 times, its dynamic priority is 8. now totalTicks: 410</span><br><span class="line">*** thread 1 with priority 1 looped 23 times, its dynamic priority is 8. now totalTicks: 420</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以看到我们的改动符合预期。</p>
+<h2 id="3-遇到的困难以及收获"><a href="#3-遇到的困难以及收获" class="headerlink" title="3 遇到的困难以及收获"></a>3 遇到的困难以及收获</h2><ol>
+<li>一开始时 Exercise 3 只实现了基于优先级的算法，在思考后才明白只需在插入就绪队列时检查优先级即可实现抢占式的调度。</li>
+<li>在 Challenge 1 中实现时间片轮转算法时，忘记将 Exercise 3 中实现的基于优先级调度的抢占式算法的抢占部分给删去，这导致时间片轮转算法的行为并不符合预期。</li>
+<li>实际上这样实现时间片轮转算法/动态优先级调度算法会显得略有不严谨之处。如现在每 100 个周期产生一个时钟中断的情况下，若 1 进程运行 80 个周期后结束，紧接着 2 进程运行了 20 个周期，该算法仍会在中断时增加进程 2 的 <code>timeSliceNum</code>。我认为这其实是一种准确度和性能之间的权衡，当减小产生时间中断的间隔时，误差会变得更小，但同时也会导致频繁时间中断的性能损失。</li>
+</ol>
+<p>尽管过程中确实遇到了很多问题，但经过认真的钻研和解决后，我对于Nachos的线程调度机制更加深入了。</p>
+<h2 id="4-对课程或Lab的意见和建议"><a href="#4-对课程或Lab的意见和建议" class="headerlink" title="4 对课程或Lab的意见和建议"></a>4 对课程或Lab的意见和建议</h2><ol>
+<li>该课程任务量过于庞大，deadline 过于紧密，希望能酌情考虑减轻。</li>
+</ol>
+<h2 id="5-参考文献"><a href="#5-参考文献" class="headerlink" title="5 参考文献"></a>5 参考文献</h2><ul>
+<li>操作系统课程PPT， Windows 进程调度部分。</li>
+</ul>
+
+    </div>
+     
+    <div class="post-footer__meta">
+    <p>
+        更新于 2020-11-03
+    </p>
+</div> 
+    <div class="post-meta__cats">
+    
+        <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%BE%E7%A8%8B/" class="post-cats__link button">计算机课程</a>
+    
+    
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-tags__link button"># 操作系统</a>
+    
+        <a href="/tags/Nachos-%E5%AE%9E%E4%B9%A0%E6%8A%A5%E5%91%8A/" class="post-tags__link button"># Nachos 实习报告</a>
+    
+</div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2020/10/29/XV6%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            XV6进程模型
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2020 <a href="/">Baker&#39;s blog</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
