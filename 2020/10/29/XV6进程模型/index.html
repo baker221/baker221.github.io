@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    <link rel="shortcut icon" type='image/x-icon' href="/favicon.ico">
+
+
+    <!-- meta -->
+
+
+<title>XV6进程模型 | Baker&#39;s blog</title>
+
+
+    <meta name="keywords" content="操作系统, XV6阅读">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="XV6阅读报告 进程模型^1涉及到的源代码文件及其功能简介在这次阅读中，我大致阅读了下面这些代码，它们的大致功能简介如下：  types.h : 为 unsigned int 、 unsigned short 等数据类型定义了简短的别名。 param.h : 利用宏定义了系统最大进程数量，每个进程内核栈的大小等信息。 proc.h : 定义了CPU、进程、上下文等结构。并定义了进程的六种状态：UN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XV6进程模型">
+<meta property="og:url" content="https://blog.baker221.codes/2020/10/29/XV6%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Baker&#39;s blog">
+<meta property="og:description" content="XV6阅读报告 进程模型^1涉及到的源代码文件及其功能简介在这次阅读中，我大致阅读了下面这些代码，它们的大致功能简介如下：  types.h : 为 unsigned int 、 unsigned short 等数据类型定义了简短的别名。 param.h : 利用宏定义了系统最大进程数量，每个进程内核栈的大小等信息。 proc.h : 定义了CPU、进程、上下文等结构。并定义了进程的六种状态：UN">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baker221/blog_images@master/uPic/20201028-232009.png">
+<meta property="article:published_time" content="2020-10-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-03T05:01:39.121Z">
+<meta property="article:author" content="baker221">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="XV6阅读">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baker221/blog_images@master/uPic/20201028-232009.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/default.css" media="none" onload="if(getComputedStyle(document.documentElement).getPropertyValue('--color-mode').indexOf('dark')===-1)this.media='all'">
+        
+    
+
+    
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+    <body>
+        <div id="app">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">
+                Baker&#39;s blog
+            </span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">
+                        Home
+                    </a>
+                
+                    <a href="/tags/" class="navbar-menu button">
+                        Tag
+                    </a>
+                
+                    <a href="/archives/" class="navbar-menu button">
+                        Archive
+                    </a>
+                
+                    <a href="/friends/" class="navbar-menu button">
+                        Friend
+                    </a>
+                
+                    <a href="/page/" class="navbar-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path>
+                </svg>
+            </a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">
+                        Home
+                    </a>
+                
+                    <a href="/tags/" class="dropdown-menu button">
+                        Tag
+                    </a>
+                
+                    <a href="/archives/" class="dropdown-menu button">
+                        Archive
+                    </a>
+                
+                    <a href="/friends/" class="dropdown-menu button">
+                        Friend
+                    </a>
+                
+                    <a href="/page/" class="dropdown-menu button">
+                        Page
+                    </a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        XV6进程模型
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2020/10/" class="post-meta__date button">
+    2020-10-29
+</a>
+        
+    <span class="separate-dot"></span><a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%BE%E7%A8%8B/" class="button">计算机课程</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="XV6阅读报告-进程模型-1"><a href="#XV6阅读报告-进程模型-1" class="headerlink" title="XV6阅读报告 进程模型^1"></a>XV6阅读报告 进程模型<a href="%E9%98%85%E8%AF%BB%E7%9A%84%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9D%A5%E8%87%AAhttps://github.com/mit-pdos/xv6-public%EF%BC%8C%E6%98%AFxv6%E7%9A%84x86%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81%E3%80%82">^1</a></h1><h2 id="涉及到的源代码文件及其功能简介"><a href="#涉及到的源代码文件及其功能简介" class="headerlink" title="涉及到的源代码文件及其功能简介"></a>涉及到的源代码文件及其功能简介</h2><p>在这次阅读中，我大致阅读了下面这些代码，它们的大致功能简介如下：</p>
+<ul>
+<li><code>types.h</code> : 为 <code>unsigned int</code> 、 <code>unsigned short</code> 等数据类型定义了简短的别名。</li>
+<li><code>param.h</code> : 利用宏定义了系统最大进程数量，每个进程内核栈的大小等信息。</li>
+<li><code>proc.h</code> : 定义了CPU、进程、上下文等结构。并定义了进程的六种状态：<code>UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE</code> 。</li>
+<li><code>proc.c</code> : 定义了系统管理所有进程的进程表 <code>ptable</code> ，并包含了首个进程初始化、分配进程空间、创建子进程、退出进程等各种与进程操作相关的函数。</li>
+<li><code>kalloc.c</code> : 实现了一个物理内存分配器包括分配函数 <code>kalloc()</code> 和释放函数 <code>kfree()</code> 等。</li>
+</ul>
+<h2 id="XV6进程模型的实现"><a href="#XV6进程模型的实现" class="headerlink" title="XV6进程模型的实现"></a>XV6进程模型的实现</h2><h3 id="进程管理块PCB在XV6中的实现"><a href="#进程管理块PCB在XV6中的实现" class="headerlink" title="进程管理块PCB在XV6中的实现"></a>进程管理块PCB在XV6中的实现</h3><p>如上所述，进程的结构在 <code>proc.h</code> 文件中定义，XV6的进程主要有以下成员，大致可分为三类：</p>
+<ol>
+<li>与操作系统管理进程相关的信息：内核栈 <code>kstack</code> ，进程状态 <code>state</code> ，进程标识符 <code>pid</code> ，该进程的父进程 <code>parent</code> ，中断帧 <code>tf</code> ，上下文 <code>context</code> ，与 <code>sleep</code> 和 <code>kill</code> 有关的 <code>chan</code> 和 <code>killed</code> 变量。</li>
+<li>进程本身运行所需要的全部环境：虚拟内存信息，包括进程内存大小 <code>sz</code> 和页表 <code>pgdir</code> ；打开的文件 <code>ofile</code>  (限定了数量上限 <code>NOFILE</code> ，其在 <code>param.h</code> 中被限定) 和当前目录 <code>cwd</code> 。</li>
+<li>用于调试时使用的进程名称 <code>name</code>。</li>
+</ol>
+<p>在XV6中，所有的进程信息都放于 <code>proc.c</code> 中定义的 <code>ptable</code> 中，其拥有互斥锁 <code>lock</code> ，避免了产生以外的修改。此外，在 <code>ptable</code> 的定义中我们也能看出，XV6系统中允许同时存在的进程数量是有上限的，其上限为 <code>NPROC</code> (在 <code>param.h</code> 中被限定为64) ，可见XV6最多只允许同时存在64个进程。</p>
+<h3 id="XV6进程的状态"><a href="#XV6进程的状态" class="headerlink" title="XV6进程的状态"></a>XV6进程的状态</h3><p>如上所述，XV6系统中进程有如下六种状态：<code>UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE</code> ，除了 <code>UNUSED</code> 标记该进程块尚未被分配使用以外，其余5个状态与操作系统课上所讲授的五状态进程模型（如图，图片来自操统PPT）完全对应，即：创建对应 <code>EMBRYO</code> ，就绪对应 <code>RUNNABLE</code> ，运行对应 <code>RUNNING</code> ，阻塞对应 <code>SLEEPING</code> ，终止对应 <code>ZOMBIE</code>。</p>
+<img src="https://cdn.jsdelivr.net/gh/baker221/blog_images@master/uPic/20201028-232009.png" alt="image-20201028232009178"  />
+
+<p>这六种状态之间的相互转换都有相应的函数来实现，在 <code>proc.c</code> 文件中均有相应的注释和说明，在此选取其中几个进行说明：</p>
+<ul>
+<li><p><code>userinit()</code> : 主要完成第一个用户进程创建的相关工作，其过程会在下一节详细说明。</p>
+</li>
+<li><p><code>fork()</code> : 完成创建子进程的工作。会将父进程的相关信息拷贝到 <code>allocproc()</code> 返回的可用的 <code>EMBRYO</code> 态进程并将相关的指针、父子关系、中断帧等设置好，并将返回值设置为0，之后将文件系统的相关描述符、打开文件目录等拷贝到子进程中，最后更新状态为 <code>RUNNABLE</code>。</p>
+</li>
+<li><p><code>exit()</code> : 退出当前进程，主要包括关闭所有打开的文件、唤醒当前进程的父进程、将该进程的子进程交由 <code>init</code> 进程管理、设置自己状态为 <code>ZOMBIE</code>等待回收等工作。</p>
+</li>
+<li><p><code>sleep()</code> 、<code>wakeup()</code> : 这两个函数分别使进程进入睡眠和将进程唤醒。主要依靠 <code>chan</code> 来确定和设置相应状态。</p>
+</li>
+<li><p><code>kill()</code> : 该函数杀死指定PID的进程，主要操作是将相应进程的 <code>killed</code> 位标记为1，若该进程处于睡眠态，将其唤醒。</p>
+</li>
+</ul>
+<p>值得注意的一点是，进行进程的状态间转换之前需要先进行上锁操作，以防止状态的更改不符合预期。</p>
+<h3 id="第一个进程的创建"><a href="#第一个进程的创建" class="headerlink" title="第一个进程的创建"></a>第一个进程的创建</h3><p>我们将分析第一个进程的创建过程以探索操作系统在进程创建过程中所做工作。</p>
+<p>首先，<code>main</code> (main.c) 在进行相关初始化后，调用 <code>userinit()</code> 函数，而该函数首先调用 <code>allocproc()</code> 函数。 </p>
+<p><code>allocproc()</code> 函数会在 <code>ptable</code> 中寻找一个未被分配使用 (标记 <code>UNUSED</code> ) 的位置，将其标记为 <code>EMBRYO</code> ，并为其分配一个独一无二的PID。之后该函数会为进程分配内核栈并进行相应操作以使得该函数既能在首次创建进程时被使用也能在 <code>fork()</code> 函数创建新进程时使用。其中，分配内核栈的操作使用了函数 <code>kalloc()</code> (kalloc.c)，该函数会分配一个4096字节的物理内存页。</p>
+<p>在上述操作之后， <code>userinit()</code> 函数通过相关函数创建了地址空间，并将中断帧 <code>trapframe</code> 设置为用户模式状态。之后，函数将该进程的 <code>name</code> 设置为 <code>initcode</code> ，并将 <code>cwd</code> 设置为进程的当前工作目录。最后，函数会将进程的 <code>state</code> 设置为 <code>RUNNABLE</code> ，使得init进程能够被调度，进程创建结束。</p>
+<p>最后，在 <code>mpmain()</code> 中，调用 <code>schedule()</code> 函数，开始用户进程的调度。</p>
+
+    </div>
+     
+    <div class="post-footer__meta">
+    <p>
+        更新于 2020-11-03
+    </p>
+</div> 
+    <div class="post-meta__cats">
+    
+        <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%BE%E7%A8%8B/" class="post-cats__link button">计算机课程</a>
+    
+    
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-tags__link button"># 操作系统</a>
+    
+        <a href="/tags/XV6%E9%98%85%E8%AF%BB/" class="post-tags__link button"># XV6阅读</a>
+    
+</div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2020/10/22/hello-world/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            Hello World
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2020 <a href="/">Baker&#39;s blog</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+  
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+
+    <script>
+        if (typeof MathJax === 'undefined') {
+            window.MathJax = {
+                loader: {
+                    source: {
+                        '[tex]/amsCd': '[tex]/amscd',
+                        '[tex]/AMScd': '[tex]/amscd'
+                    }
+                },
+                tex: {
+                    inlineMath: {'[+]': [['$', '$']]},
+                    tags: 'ams'
+                },
+                options: {
+                    renderActions: {
+                        findScript: [10, doc => {
+                            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                                const display = !!node.type.match(/; *mode=display/);
+                                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                                const text = document.createTextNode('');
+                                node.parentNode.replaceChild(text, node);
+                                math.start = {node: text, delim: '', n: 0};
+                                math.end = {node: text, delim: '', n: 0};
+                                doc.math.push(math);
+                            });
+                        }, '', false],
+                        insertedScript: [200, () => {
+                            document.querySelectorAll('mjx-container').forEach(node => {
+                                let target = node.parentNode;
+                                if (target.nodeName.toLowerCase() === 'li') {
+                                    target.parentNode.classList.add('has-jax');
+                                }
+                            });
+                        }, '', false]
+                    }
+                }
+            };
+            (function () {
+                var script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                script.defer = true;
+                document.head.appendChild(script);
+            })();
+        } else {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+        }
+    </script>
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
